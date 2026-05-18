@@ -117,17 +117,16 @@ public final class MonkVfxUtil {
         @Nonnull PlayerContext ctx,
         int orbIndex,
         int maxOrbs,
+        double orbitAngleRad,
         @Nonnull MonkAsuraConfig config
     ) {
         MonkAnimationUtil.playOrbCastAnimation(ctx);
         spawnElectricAroundPlayer(ctx);
 
-        MonkComboComponent state = MonkAsuraPlugin.getInstance().getComboService()
-            .getOrCreate(ctx.playerRef().getUuid());
         Vector3d orbitPos = OrbOrbitUtil.computeOrbPosition(
             ctx.playerRef().getTransform().getPosition(),
             config.getOrbitRadius(),
-            state.getOrbitAngle(),
+            orbitAngleRad,
             orbIndex - 1,
             maxOrbs
         );

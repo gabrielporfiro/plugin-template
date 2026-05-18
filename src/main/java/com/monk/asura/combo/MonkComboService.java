@@ -215,7 +215,7 @@ public class MonkComboService {
         MonkDebugLog.log("E", "MonkComboService.invokeOrb", "spawning orb",
             MonkDebugLog.map("orbIndex", orbIndex, "maxOrbs", config.getMaxOrbs(), "runId", "post-fix"));
         // #endregion
-        MonkVfxUtil.spawnOrbCreation(ctx, orbIndex, config.getMaxOrbs(), config);
+        MonkVfxUtil.spawnOrbCreation(ctx, orbIndex, config.getMaxOrbs(), state.getOrbitAngle(), config);
         plugin.getOrbVisualSystem().burstOrbCreated(ctx, orbIndex);
         syncOrbAuraEffect(ctx, state);
         refreshHud(state.getPlayerId());
