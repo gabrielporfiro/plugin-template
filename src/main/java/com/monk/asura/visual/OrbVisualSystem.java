@@ -119,7 +119,7 @@ public class OrbVisualSystem {
     }
 
     /**
-     * Partículas imediatas na órbita ao criar um orbe (tecla 1).
+     * Partículas imediatas na órbita ao criar um orbe (Habilidade 1).
      */
     public void burstOrbCreated(@Nonnull PlayerContext ctx, int orbIndex) {
         MonkComboComponent state = plugin.getComboService().getOrCreate(ctx.playerRef().getUuid());

@@ -113,7 +113,7 @@ public class MonkComboService {
             );
             MonkVfxUtil.notifyWarning(
                 ctx.playerRef(),
-                "Barra de skills indisponível. Use teclas 1/2/3 e /monkskills."
+                "Barra de skills indisponível. Use Habilidade 1/2/3 ou /monkskills."
             );
         }
     }
