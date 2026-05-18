@@ -16,17 +16,18 @@
     "Speed": { "Min": 0, "Max": 0.01 }
   },
   "Particle": {
-    "Texture": "Particles/Textures/Shapes/Lightning.png",
+    "Texture": "Particles/Textures/Circles/Circle_Glow.png",
+    "ScaleRatioConstraint": "OneToOne",
     "FrameSize": { "Width": 32, "Height": 32 },
     "Animation": {
       "0": {
-        "Scale": { "X": { "Min": 0.78, "Max": 0.88 }, "Y": { "Min": 0.78, "Max": 0.88 } },
-        "Opacity": 0.85,
-        "Color": "#99eeff"
+        "Scale": { "X": { "Min": 0.75, "Max": 0.85 } },
+        "Opacity": 0.9,
+        "Color": "#aaf8ff"
       },
       "100": {
-        "Scale": { "X": { "Min": 0.65, "Max": 0.72 }, "Y": { "Min": 0.65, "Max": 0.72 } },
-        "Opacity": 0.25,
+        "Scale": { "X": { "Min": 0.6, "Max": 0.7 } },
+        "Opacity": 0.2,
         "Color": "#3388cc"
       }
     }

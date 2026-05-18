@@ -17,16 +17,17 @@
     "Speed": { "Min": 0, "Max": 0.02 }
   },
   "Particle": {
-    "Texture": "Particles/Textures/Shapes/Soft.png",
+    "Texture": "Particles/Textures/Basic/Ball2.png",
+    "ScaleRatioConstraint": "OneToOne",
     "FrameSize": { "Width": 32, "Height": 32 },
     "Animation": {
       "0": {
-        "Scale": { "X": { "Min": 0.82, "Max": 0.92 }, "Y": { "Min": 0.82, "Max": 0.92 } },
+        "Scale": { "X": { "Min": 0.82, "Max": 0.92 } },
         "Opacity": 1.0,
         "Color": "#c8f8ff"
       },
       "100": {
-        "Scale": { "X": { "Min": 0.7, "Max": 0.8 }, "Y": { "Min": 0.7, "Max": 0.8 } },
+        "Scale": { "X": { "Min": 0.7, "Max": 0.8 } },
         "Opacity": 0.35,
         "Color": "#55aadd"
       }
