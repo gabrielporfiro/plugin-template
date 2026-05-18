@@ -24,7 +24,7 @@ public final class MonkTasks {
         long delay,
         @Nonnull TimeUnit unit
     ) {
-        ScheduledFuture<?> future = HytaleServer.SCHEDULED_EXECUTOR.schedule(task, delay, unit);
+        ScheduledFuture<Void> future = scheduleVoid(task, delay, unit);
         return plugin.getTaskRegistry().registerTask(future);
     }
 
@@ -36,12 +36,31 @@ public final class MonkTasks {
         long period,
         @Nonnull TimeUnit unit
     ) {
-        ScheduledFuture<?> future = HytaleServer.SCHEDULED_EXECUTOR.scheduleAtFixedRate(
+        ScheduledFuture<Void> future = scheduleAtFixedRateVoid(task, initialDelay, period, unit);
+        return plugin.getTaskRegistry().registerTask(future);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static ScheduledFuture<Void> scheduleVoid(
+        Runnable task,
+        long delay,
+        TimeUnit unit
+    ) {
+        return (ScheduledFuture<Void>) HytaleServer.SCHEDULED_EXECUTOR.schedule(task, delay, unit);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static ScheduledFuture<Void> scheduleAtFixedRateVoid(
+        Runnable task,
+        long initialDelay,
+        long period,
+        TimeUnit unit
+    ) {
+        return (ScheduledFuture<Void>) HytaleServer.SCHEDULED_EXECUTOR.scheduleAtFixedRate(
             task,
             initialDelay,
             period,
             unit
         );
-        return plugin.getTaskRegistry().registerTask(future);
     }
 }

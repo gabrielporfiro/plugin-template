@@ -52,6 +52,7 @@ public class MonkAsuraPlugin extends JavaPlugin {
 
     @Override
     protected void start() {
+        config.load();
         orbVisualSystem.start();
         getLogger().at(Level.INFO).log(
             "MonkAsura v%s ativo — teclas 1=Esfera | 2=Fúria | 3=Asura",
