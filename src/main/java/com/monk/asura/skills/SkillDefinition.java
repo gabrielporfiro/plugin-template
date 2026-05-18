@@ -6,19 +6,19 @@ import javax.annotation.Nonnull;
 
 public enum SkillDefinition {
     INVOKE_ORB(
-        "Habilidade 1 — Invocar Esfera Espiritual",
+        "Tecla 4 / Habilidade 1 — Invocar Esfera Espiritual",
         "Invoca 1 orbe espiritual orbitando você. Máximo de 5 orbes. Efeito no corpo e na órbita.",
         "Nenhum (até o máximo de orbes)",
         "+1 orbe espiritual"
     ),
     FURY(
-        "Habilidade 2 — Fúria",
+        "Tecla 5 / Habilidade 2 — Fúria",
         "Consome todas as esferas e libera poder devastador no personagem. Habilita o Punho de Asura.",
         "5 orbes espirituais ativos",
         "Consome 5 orbes"
     ),
     ASURA(
-        "Habilidade 3 — Punho Supremo de Asura",
+        "Tecla 6 / Habilidade 3 — Punho Supremo de Asura",
         "Concentra todas as esferas e desfere um golpe extremo em inimigos próximos.",
         "Fúria já ativada + 5 orbes reunidos",
         "Consome 5 orbes"

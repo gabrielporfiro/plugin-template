@@ -5,6 +5,7 @@ import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.InteractionType;
 import com.hypixel.hytale.protocol.packets.interaction.SyncInteractionChain;
 import com.hypixel.hytale.protocol.packets.interaction.SyncInteractionChains;
+import com.hypixel.hytale.protocol.packets.inventory.SetActiveSlot;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.event.events.player.PlayerInteractEvent;
 import com.hypixel.hytale.server.core.io.adapter.PacketAdapters;
@@ -13,13 +14,15 @@ import com.hypixel.hytale.server.core.io.adapter.PlayerPacketFilter;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.monk.asura.MonkAsuraPlugin;
+import com.monk.asura.debug.MonkDebugLog;
+import com.monk.asura.util.MonkInventoryIds;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
- * Habilidade 1 / 2 / 3 do jogador (slots dedicados, sem bloquear a hotbar 1–9).
- * Vincule em Opções → Controles → Habilidade 1, 2 e 3.
+ * Skills via teclas 4 / 5 / 6 da hotbar (padrão confiável) ou Habilidade 1/2/3 em Controles.
+ * Q no cliente costuma ser "Usar" ({@link InteractionType#Use}), não Habilidade 1.
  */
 public class MonkSkillInputHandler implements PlayerPacketFilter {
 
@@ -52,33 +55,106 @@ public class MonkSkillInputHandler implements PlayerPacketFilter {
         if (universeRef == null) {
             return;
         }
-        if (handleAbility(universeRef, event.getActionType())) {
+        InteractionType action = event.getActionType();
+        // #region agent log
+        MonkDebugLog.log("B", "MonkSkillInputHandler.onPlayerInteract", "PlayerInteractEvent",
+            MonkDebugLog.map("actionType", action != null ? action.name() : "null", "player", universeRef.getUsername()));
+        // #endregion
+        if (action == null) {
+            return;
+        }
+        if (handleAbility(universeRef, action, "interact-event")) {
             event.setCancelled(true);
         }
     }
 
     @Override
     public boolean test(@Nonnull PlayerRef playerRef, @Nonnull com.hypixel.hytale.protocol.Packet packet) {
+        if (packet instanceof SetActiveSlot slotPacket) {
+            return handleHotbarSkill(playerRef, slotPacket);
+        }
         if (!(packet instanceof SyncInteractionChains chains) || chains.updates == null) {
             return false;
         }
         boolean handled = false;
         for (SyncInteractionChain chain : chains.updates) {
-            if (chain == null || chain.interactionType == null) {
+            if (chain == null) {
                 continue;
             }
-            handled |= handleAbility(playerRef, chain.interactionType);
+            handled |= handleHotbarFromChain(playerRef, chain);
+            if (chain.interactionType != null) {
+                handled |= handleAbility(playerRef, chain.interactionType, "packet");
+            }
         }
         return handled;
     }
 
-    private boolean handleAbility(@Nonnull PlayerRef playerRef, @Nonnull InteractionType type) {
-        return switch (type) {
+    /**
+     * Troca de hotbar no cliente chega como SwapFrom/SwapTo com {@code activeHotbarSlot},
+     * não via {@link SetActiveSlot} no filtro de pacotes.
+     */
+    private boolean handleHotbarFromChain(@Nonnull PlayerRef playerRef, @Nonnull SyncInteractionChain chain) {
+        if (chain.interactionType != InteractionType.SwapFrom
+            && chain.interactionType != InteractionType.SwapTo) {
+            return false;
+        }
+        // #region agent log
+        MonkDebugLog.log("G", "MonkSkillInputHandler.handleHotbarFromChain", "Swap hotbar",
+            MonkDebugLog.map("interactionType", chain.interactionType.name(),
+                "activeHotbarSlot", chain.activeHotbarSlot,
+                "key", chain.activeHotbarSlot + 1,
+                "player", playerRef.getUsername(),
+                "runId", "post-fix-v2"));
+        // #endregion
+        return handleHotbarSkillBySlot(playerRef, chain.activeHotbarSlot);
+    }
+
+    private boolean handleHotbarSkill(@Nonnull PlayerRef playerRef, @Nonnull SetActiveSlot slotPacket) {
+        if (slotPacket.inventorySectionId != MonkInventoryIds.HOTBAR_SECTION) {
+            return false;
+        }
+        // #region agent log
+        MonkDebugLog.log("F", "MonkSkillInputHandler.handleHotbarSkill", "SetActiveSlot",
+            MonkDebugLog.map("activeSlot", slotPacket.activeSlot, "player", playerRef.getUsername(),
+                "runId", "post-fix-v2"));
+        // #endregion
+        return handleHotbarSkillBySlot(playerRef, slotPacket.activeSlot);
+    }
+
+    private boolean handleHotbarSkillBySlot(@Nonnull PlayerRef playerRef, int slot) {
+        boolean result = switch (slot) {
+            case MonkInventoryIds.SLOT_ORB -> plugin.getComboService().tryInvokeOrb(playerRef);
+            case MonkInventoryIds.SLOT_FURY -> plugin.getComboService().tryFury(playerRef);
+            case MonkInventoryIds.SLOT_ASURA -> plugin.getComboService().tryAsura(playerRef);
+            default -> false;
+        };
+        if (result) {
+            // #region agent log
+            MonkDebugLog.log("G", "MonkSkillInputHandler.handleHotbarSkillBySlot", "skill triggered",
+                MonkDebugLog.map("slot", slot, "key", slot + 1, "player", playerRef.getUsername(),
+                    "runId", "post-fix-v2"));
+            // #endregion
+        }
+        return result;
+    }
+
+    private boolean handleAbility(
+        @Nonnull PlayerRef playerRef,
+        @Nonnull InteractionType type,
+        @Nonnull String source
+    ) {
+        boolean result = switch (type) {
             case Ability1 -> plugin.getComboService().tryInvokeOrb(playerRef);
             case Ability2 -> plugin.getComboService().tryFury(playerRef);
             case Ability3 -> plugin.getComboService().tryAsura(playerRef);
             default -> false;
         };
+        // #region agent log
+        MonkDebugLog.log("A", "MonkSkillInputHandler.handleAbility", "ability handled",
+            MonkDebugLog.map("type", type.name(), "source", source, "result", result,
+                "player", playerRef.getUsername(), "runId", "post-fix"));
+        // #endregion
+        return result;
     }
 
     @Nullable

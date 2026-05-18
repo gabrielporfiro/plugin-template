@@ -21,6 +21,7 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.monk.asura.MonkAsuraPlugin;
 import com.monk.asura.config.MonkAsuraConfig;
 import com.monk.asura.ui.MonkSkillBarHud;
+import com.monk.asura.debug.MonkDebugLog;
 import com.monk.asura.util.MonkTasks;
 import com.monk.asura.util.PlayerContext;
 import com.monk.asura.visual.MonkVfxUtil;
@@ -113,7 +114,7 @@ public class MonkComboService {
             );
             MonkVfxUtil.notifyWarning(
                 ctx.playerRef(),
-                "Barra de skills indisponível. Use Habilidade 1/2/3 ou /monkskills."
+                "Barra de skills indisponível. Use teclas 4/5/6 ou /monkskills."
             );
         }
     }
@@ -136,12 +137,22 @@ public class MonkComboService {
     }
 
     public boolean tryInvokeOrb(@Nonnull PlayerRef playerRef) {
-        return runOnWorld(playerRef, () -> {
+        boolean scheduled = runOnWorld(playerRef, () -> {
             PlayerContext ctx = PlayerContext.from(playerRef);
+            // #region agent log
+            MonkDebugLog.log("C", "MonkComboService.tryInvokeOrb", "world.execute ran",
+                MonkDebugLog.map("ctxNull", ctx == null, "player", playerRef.getUsername(),
+                    "valid", playerRef.isValid()));
+            // #endregion
             if (ctx != null) {
                 invokeOrb(ctx);
             }
         });
+        // #region agent log
+        MonkDebugLog.log("C", "MonkComboService.tryInvokeOrb", "scheduled",
+            MonkDebugLog.map("scheduled", scheduled, "player", playerRef.getUsername()));
+        // #endregion
+        return scheduled;
     }
 
     public boolean tryFury(@Nonnull PlayerRef playerRef) {
@@ -179,12 +190,20 @@ public class MonkComboService {
         refreshFuryExpiry(state);
 
         if (state.getPhase() == MonkComboPhase.ASURA_CHARGING) {
+            // #region agent log
+            MonkDebugLog.log("D", "MonkComboService.invokeOrb", "early return",
+                MonkDebugLog.map("reason", "asura_charging"));
+            // #endregion
             MonkVfxUtil.notifyWarning(ctx.playerRef(), "Concentração em andamento…");
             return;
         }
 
         MonkAsuraConfig config = plugin.getConfig();
         if (state.getOrbCount() >= config.getMaxOrbs()) {
+            // #region agent log
+            MonkDebugLog.log("D", "MonkComboService.invokeOrb", "early return",
+                MonkDebugLog.map("reason", "max_orbs", "count", state.getOrbCount()));
+            // #endregion
             MonkVfxUtil.notifyWarning(ctx.playerRef(), "Você já possui o máximo de esferas (" + config.getMaxOrbs() + ").");
             refreshHud(state.getPlayerId());
             return;
@@ -192,6 +211,10 @@ public class MonkComboService {
 
         state.setOrbCount(state.getOrbCount() + 1);
         int orbIndex = state.getOrbCount();
+        // #region agent log
+        MonkDebugLog.log("E", "MonkComboService.invokeOrb", "spawning orb",
+            MonkDebugLog.map("orbIndex", orbIndex, "maxOrbs", config.getMaxOrbs(), "runId", "post-fix"));
+        // #endregion
         MonkVfxUtil.spawnOrbCreation(ctx, orbIndex, config.getMaxOrbs(), config);
         plugin.getOrbVisualSystem().burstOrbCreated(ctx, orbIndex);
         syncOrbAuraEffect(ctx, state);

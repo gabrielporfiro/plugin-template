@@ -26,7 +26,7 @@ public class MonkAsuraConfig {
     private float asuraChargeSeconds = 2f;
     private float asuraBaseDamage = 1500f;
     private float asuraRadius = 5f;
-    private float orbitRadius = 1.5f;
+    private float orbitRadius = 1.75f;
     private float maxDamagePercentOfMaxHealth = 0.4f;
     private float orbitSpeed = 1.8f;
 

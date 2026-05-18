@@ -13,7 +13,7 @@ import com.monk.asura.util.MonkMessages;
 import com.monk.asura.util.PlayerContext;
 
 import javax.annotation.Nonnull;
-import java.util.Collections;
+import java.util.List;
 
 public final class MonkVfxUtil {
 
@@ -35,24 +35,34 @@ public final class MonkVfxUtil {
     private MonkVfxUtil() {
     }
 
+    /**
+     * Envia partículas ao jogador e a quem estiver perto. Nunca use lista vazia —
+     * {@link ParticleUtil} só envia pacotes aos refs da lista (ou coleta espacial no overload sem ref).
+     */
     public static void spawnAt(@Nonnull PlayerContext ctx, @Nonnull String systemId, @Nonnull Vector3d position) {
         try {
-            ParticleUtil.spawnParticleEffect(
-                systemId,
-                position,
-                ctx.entityRef(),
-                Collections.emptyList(),
-                ctx.store()
-            );
-        } catch (Exception ignored) {
-            ParticleUtil.spawnParticleEffect(
-                FALLBACK_PARTICLE,
-                position,
-                ctx.entityRef(),
-                Collections.emptyList(),
-                ctx.store()
-            );
+            ParticleUtil.spawnParticleEffect(systemId, position, ctx.store());
+        } catch (Exception primary) {
+            try {
+                ParticleUtil.spawnParticleEffect(FALLBACK_PARTICLE, position, ctx.store());
+            } catch (Exception fallback) {
+                try {
+                    ParticleUtil.spawnParticleEffect(
+                        FALLBACK_PARTICLE,
+                        position,
+                        List.of(ctx.entityRef()),
+                        ctx.store()
+                    );
+                } catch (Exception ignored) {
+                    // sem VFX
+                }
+            }
         }
+    }
+
+    /** Esfera redonda + faíscas na casca (órbita). */
+    public static void spawnOrbSphere(@Nonnull PlayerContext ctx, @Nonnull Vector3d position) {
+        spawnAt(ctx, PARTICLE_ORB_IDLE, position);
     }
 
     public static void spawnOnPlayer(@Nonnull PlayerContext ctx, @Nonnull String systemId) {
@@ -94,13 +104,7 @@ public final class MonkVfxUtil {
 
     private static void trySpawnVanillaLightning(@Nonnull PlayerContext ctx, @Nonnull Vector3d position) {
         try {
-            ParticleUtil.spawnParticleEffect(
-                PARTICLE_VANILLA_LIGHTNING,
-                position,
-                ctx.entityRef(),
-                Collections.emptyList(),
-                ctx.store()
-            );
+            ParticleUtil.spawnParticleEffect(PARTICLE_VANILLA_LIGHTNING, position, ctx.store());
         } catch (Exception ignored) {
             // asset vanilla opcional
         }
@@ -118,22 +122,21 @@ public final class MonkVfxUtil {
         MonkAnimationUtil.playOrbCastAnimation(ctx);
         spawnElectricAroundPlayer(ctx);
 
-        Vector3d center = ctx.playerRef().getTransform().getPosition();
-        double radius = config.getOrbitRadius();
-        double angle = (Math.PI * 2.0 * (orbIndex - 1) / maxOrbs);
-
-        Vector3d orbitPos = new Vector3d(
-            center.getX() + Math.cos(angle) * radius,
-            center.getY() + 1.15,
-            center.getZ() + Math.sin(angle) * radius
+        MonkComboComponent state = MonkAsuraPlugin.getInstance().getComboService()
+            .getOrCreate(ctx.playerRef().getUuid());
+        Vector3d orbitPos = OrbOrbitUtil.computeOrbPosition(
+            ctx.playerRef().getTransform().getPosition(),
+            config.getOrbitRadius(),
+            state.getOrbitAngle(),
+            orbIndex - 1,
+            maxOrbs
         );
 
         spawnOnPlayer(ctx, PARTICLE_ORB_SPAWN);
         spawnOnPlayer(ctx, PARTICLE_ORB_BODY_AURA);
         spawnAt(ctx, PARTICLE_ORB_ELECTRIC_BURST, orbitPos);
         spawnAt(ctx, PARTICLE_ORB_SPAWN, orbitPos);
-        spawnAt(ctx, PARTICLE_ORB_IDLE, orbitPos);
-        spawnAt(ctx, PARTICLE_ELECTRIC_SPARKS, orbitPos);
+        spawnOrbSphere(ctx, orbitPos);
         trySpawnVanillaLightning(ctx, orbitPos);
     }
 

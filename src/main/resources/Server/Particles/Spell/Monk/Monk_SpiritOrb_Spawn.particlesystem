@@ -1,7 +1,8 @@
 {
   "Spawners": [
-    { "SpawnerId": "Monk_Electric_Sparks_Core" },
-    { "SpawnerId": "Monk_SpiritOrb_Core" }
+    { "SpawnerId": "Monk_Orb_Sphere_Core" },
+    { "SpawnerId": "Monk_Orb_SparkShell_Core" },
+    { "SpawnerId": "Monk_Orb_ElectricBurst_Core" }
   ],
-  "CullDistance": 56
+  "CullDistance": 64
 }

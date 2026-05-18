@@ -6,6 +6,10 @@ import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import com.hypixel.hytale.server.core.util.Config;
 import com.monk.asura.combo.MonkComboService;
+import com.monk.asura.commands.MonkAsuraCommand;
+import com.monk.asura.commands.MonkFuryCommand;
+import com.monk.asura.commands.MonkOrbCommand;
+import com.monk.asura.commands.MonkResetCommand;
 import com.monk.asura.commands.MonkSkillsCommand;
 import com.monk.asura.config.MonkAsuraConfig;
 import com.monk.asura.input.MonkSkillInputHandler;
@@ -42,6 +46,10 @@ public class MonkAsuraPlugin extends JavaPlugin {
         inputHandler = new MonkSkillInputHandler(this);
 
         getCommandRegistry().registerCommand(new MonkSkillsCommand(this));
+        getCommandRegistry().registerCommand(new MonkOrbCommand(this));
+        getCommandRegistry().registerCommand(new MonkFuryCommand(this));
+        getCommandRegistry().registerCommand(new MonkAsuraCommand(this));
+        getCommandRegistry().registerCommand(new MonkResetCommand(this));
         inputHandler.register();
 
         getEventRegistry().registerGlobal(PlayerReadyEvent.class, this::onPlayerReady);
@@ -55,7 +63,7 @@ public class MonkAsuraPlugin extends JavaPlugin {
         config.load();
         orbVisualSystem.start();
         getLogger().at(Level.INFO).log(
-            "MonkAsura v%s ativo — Habilidade 1/2/3 (sem conflito com hotbar)",
+            "MonkAsura v%s ativo — teclas 4/5/6 ou Habilidade 1/2/3",
             getManifest().getVersion()
         );
     }
@@ -96,7 +104,7 @@ public class MonkAsuraPlugin extends JavaPlugin {
         comboService.attachHud(ctx);
         MonkVfxUtil.notifyInfo(
             ctx.playerRef(),
-            "Monk: Habilidade 1 = Esfera | 2 = Fúria | 3 = Asura (vincule em Controles)"
+            "Monk: /monkorbe /monkfuria /monkasura /monkreset — ou teclas 4/5/6"
         );
     }
 
