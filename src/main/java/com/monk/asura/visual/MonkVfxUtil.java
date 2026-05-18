@@ -136,7 +136,12 @@ public final class MonkVfxUtil {
         trySpawnVanillaLightning(ctx, orbitPos);
     }
 
+    public static void sendChat(@Nonnull PlayerRef playerRef, @Nonnull String text) {
+        playerRef.sendMessage(Message.raw(text));
+    }
+
     public static void notifyWarning(@Nonnull PlayerRef playerRef, @Nonnull String text) {
+        sendChat(playerRef, "§c[Monk] §f" + text);
         NotificationUtil.sendNotification(
             playerRef.getPacketHandler(),
             Message.raw(text),
@@ -145,11 +150,16 @@ public final class MonkVfxUtil {
     }
 
     public static void notifyInfo(@Nonnull PlayerRef playerRef, @Nonnull String text) {
+        sendChat(playerRef, "§7[Monk] §f" + text);
         NotificationUtil.sendNotification(
             playerRef.getPacketHandler(),
             Message.raw(text),
             NotificationStyle.Default
         );
+    }
+
+    public static void notifySkill(@Nonnull PlayerRef playerRef, @Nonnull String text) {
+        sendChat(playerRef, "§b[Monk] §f" + text);
     }
 
     public static void showFuryTitle(@Nonnull PlayerRef playerRef) {

@@ -113,7 +113,7 @@ public class MonkComboService {
             );
             MonkVfxUtil.notifyWarning(
                 ctx.playerRef(),
-                "Barra de skills indisponível. Use F1/F2/F3 e /monkskills."
+                "Barra de skills indisponível. Use teclas 1/2/3 e /monkskills."
             );
         }
     }
@@ -196,6 +196,10 @@ public class MonkComboService {
         plugin.getOrbVisualSystem().burstOrbCreated(ctx, orbIndex);
         syncOrbAuraEffect(ctx, state);
         refreshHud(state.getPlayerId());
+        MonkVfxUtil.notifySkill(
+            ctx.playerRef(),
+            "Invocar Esfera — orbes " + state.getOrbCount() + "/" + config.getMaxOrbs()
+        );
     }
 
     private void activateFury(@Nonnull PlayerContext ctx) {
@@ -223,6 +227,7 @@ public class MonkComboService {
         applyFuryEffect(ctx, config.getFuryDurationSeconds());
         MonkVfxUtil.playFuryLoop(ctx);
         MonkVfxUtil.showFuryTitle(ctx.playerRef());
+        MonkVfxUtil.notifySkill(ctx.playerRef(), "Fúria ativada!");
         refreshHud(state.getPlayerId());
 
         HytaleServer.SCHEDULED_EXECUTOR.schedule(
@@ -326,6 +331,7 @@ public class MonkComboService {
         refreshHud(state.getPlayerId());
 
         MonkVfxUtil.spawnOnPlayer(ctx, MonkVfxUtil.PARTICLE_ASURA_CHARGE);
+        MonkVfxUtil.notifySkill(ctx.playerRef(), "Punho Supremo de Asura — concentrando…");
 
         long chargeMs = (long) (config.getAsuraChargeSeconds() * 1000L);
         int steps = Math.max(1, (int) (chargeMs / 100L));
@@ -358,6 +364,7 @@ public class MonkComboService {
         MonkVfxUtil.spawnAt(ctx, MonkVfxUtil.PARTICLE_ASURA_IMPACT, center);
         MonkVfxUtil.spawnAt(ctx, MonkVfxUtil.PARTICLE_ASURA_EXPLOSION, center);
         MonkVfxUtil.showAsuraTitle(ctx.playerRef());
+        MonkVfxUtil.notifySkill(ctx.playerRef(), "Punho Supremo de Asura!");
 
         List<Ref<com.hypixel.hytale.server.core.universe.world.storage.EntityStore>> targets =
             findNearbyHostiles(ctx, config.getAsuraRadius());

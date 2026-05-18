@@ -54,7 +54,7 @@ public class MonkAsuraPlugin extends JavaPlugin {
     protected void start() {
         orbVisualSystem.start();
         getLogger().at(Level.INFO).log(
-            "MonkAsura v%s ativo — F1=Esfera | F2=Fúria | F3=Asura (vincule Habilidade 1/2/3)",
+            "MonkAsura v%s ativo — teclas 1=Esfera | 2=Fúria | 3=Asura",
             getManifest().getVersion()
         );
     }
@@ -94,7 +94,7 @@ public class MonkAsuraPlugin extends JavaPlugin {
         comboService.attachHud(ctx);
         MonkVfxUtil.notifyInfo(
             ctx.playerRef(),
-            "Monk: F1=Esfera | F2=Fúria | F3=Asura — vincule Habilidade 1/2/3 às teclas F1-F3"
+            "Monk: tecla 1 = Esfera | 2 = Fúria | 3 = Asura"
         );
     }
 

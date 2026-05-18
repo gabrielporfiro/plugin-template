@@ -21,7 +21,7 @@ Group {
     Label #Hint {
       Style: (FontSize: 14, Alignment: Center);
       Anchor: (Top: 8, Width: 480, Height: 28);
-      Text: "Passe o mouse sobre os icones. F1 / F2 / F3 no jogo.";
+      Text: "Passe o mouse sobre os icones. Teclas 1 / 2 / 3 no jogo.";
     }
 
     Group #SkillsRow {
@@ -62,7 +62,7 @@ Group {
     Label #Footer {
       Style: (FontSize: 13, Alignment: Center);
       Anchor: (Top: 32, Width: 480, Height: 60);
-      Text: "F1 Esfera - F2 Furia (5 orbes) - F3 Asura (apos Furia + 5 orbes)";
+      Text: "1 Esfera - 2 Furia (5 orbes) - 3 Asura (apos Furia + 5 orbes)";
     }
   }
 }
