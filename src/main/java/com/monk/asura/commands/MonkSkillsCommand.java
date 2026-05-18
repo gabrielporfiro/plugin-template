@@ -2,7 +2,6 @@ package com.monk.asura.commands;
 
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
-import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayerCommand;
 import com.hypixel.hytale.server.core.entity.entities.Player;
@@ -11,6 +10,7 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.monk.asura.MonkAsuraPlugin;
 import com.monk.asura.ui.MonkSkillsMenuPage;
+import com.monk.asura.util.MonkMessages;
 
 import javax.annotation.Nonnull;
 
@@ -33,7 +33,7 @@ public class MonkSkillsCommand extends AbstractPlayerCommand {
     ) {
         Player player = store.getComponent(ref, Player.getComponentType());
         if (player == null) {
-            context.sendMessage(Message.raw("Jogador não encontrado."));
+            context.sendMessage(MonkMessages.warning("Jogador não encontrado."));
             return;
         }
         MonkSkillsMenuPage page = new MonkSkillsMenuPage(playerRef, plugin);

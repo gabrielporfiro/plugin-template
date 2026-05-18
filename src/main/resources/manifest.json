@@ -1,13 +1,14 @@
 {
     "Group": "MonkAsura",
     "Name": "MonkAsura",
-    "Version": "1.0.0",
-    "Description": "Sistema de 3 habilidades Monk estilo Ragnarok Online (Esferas, Fúria, Asura)",
+    "Version": "1.1.0",
+    "Description": "Habilidades Monk estilo Ragnarok Online: Esferas Espirituais (1), Fúria (2) e Punho Supremo de Asura (3). Inclui HUD, efeitos e partículas.",
     "Authors": [
         {
             "Name": "MonkAsura"
         }
     ],
+    "Website": "https://github.com/monk-asura",
     "DisabledByDefault": false,
     "IncludesAssetPack": true,
     "Dependencies": {},

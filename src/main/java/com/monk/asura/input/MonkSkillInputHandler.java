@@ -1,18 +1,19 @@
 package com.monk.asura.input;
 
-import com.hypixel.hytale.component.Ref;
-import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.inventory.SetActiveSlot;
-import com.hypixel.hytale.server.core.inventory.Inventory;
 import com.hypixel.hytale.server.core.io.adapter.PacketAdapters;
+import com.hypixel.hytale.server.core.io.adapter.PacketFilter;
 import com.hypixel.hytale.server.core.io.adapter.PlayerPacketFilter;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.monk.asura.MonkAsuraPlugin;
+import com.monk.asura.util.MonkInventoryIds;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
- * Teclas 1, 2 e 3 da hotbar = Invocar Esfera, Fúria e Punho de Asura.
+ * Intercepta {@link SetActiveSlot} na hotbar (teclas 1–3) conforme guia de
+ * personalização de input por pacotes do Hytale.
  */
 public class MonkSkillInputHandler implements PlayerPacketFilter {
 
@@ -21,13 +22,22 @@ public class MonkSkillInputHandler implements PlayerPacketFilter {
     private static final int SKILL_SLOT_ASURA = 2;
 
     private final MonkAsuraPlugin plugin;
+    @Nullable
+    private PacketFilter inboundFilter;
 
     public MonkSkillInputHandler(@Nonnull MonkAsuraPlugin plugin) {
         this.plugin = plugin;
     }
 
     public void register() {
-        PacketAdapters.registerInbound(this);
+        inboundFilter = PacketAdapters.registerInbound(this);
+    }
+
+    public void unregister() {
+        if (inboundFilter != null) {
+            PacketAdapters.deregisterInbound(inboundFilter);
+            inboundFilter = null;
+        }
     }
 
     @Override
@@ -35,7 +45,7 @@ public class MonkSkillInputHandler implements PlayerPacketFilter {
         if (!(packet instanceof SetActiveSlot slotPacket)) {
             return false;
         }
-        if (slotPacket.inventorySectionId != Inventory.HOTBAR_SECTION_ID) {
+        if (slotPacket.inventorySectionId != MonkInventoryIds.HOTBAR_SECTION) {
             return false;
         }
         return handleHotbarSkill(playerRef, slotPacket.activeSlot);

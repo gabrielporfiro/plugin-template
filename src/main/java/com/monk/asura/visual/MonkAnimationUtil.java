@@ -1,10 +1,11 @@
 package com.monk.asura.visual;
 
 import com.hypixel.hytale.protocol.AnimationSlot;
-import com.hypixel.hytale.server.core.HytaleServer;
 import com.hypixel.hytale.server.core.asset.type.itemanimation.config.ItemPlayerAnimations;
 import com.hypixel.hytale.server.core.entity.AnimationUtils;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
+import com.monk.asura.MonkAsuraPlugin;
+import com.monk.asura.util.MonkTasks;
 import com.monk.asura.util.PlayerContext;
 
 import javax.annotation.Nonnull;
@@ -43,7 +44,12 @@ public final class MonkAnimationUtil {
         }
 
         PlayerRef playerRef = ctx.playerRef();
-        HytaleServer.SCHEDULED_EXECUTOR.schedule(
+        MonkAsuraPlugin plugin = MonkAsuraPlugin.getInstance();
+        if (plugin == null) {
+            return;
+        }
+        MonkTasks.schedule(
+            plugin,
             () -> {
                 if (!playerRef.isValid()) {
                     return;

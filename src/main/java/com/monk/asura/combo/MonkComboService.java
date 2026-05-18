@@ -3,7 +3,6 @@ package com.monk.asura.combo;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.math.vector.Vector3d;
-import com.hypixel.hytale.server.core.HytaleServer;
 import com.hypixel.hytale.server.core.asset.type.entityeffect.config.EntityEffect;
 import com.hypixel.hytale.server.core.asset.type.entityeffect.config.OverlapBehavior;
 import com.hypixel.hytale.server.core.entity.effect.EffectControllerComponent;
@@ -22,6 +21,7 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.monk.asura.MonkAsuraPlugin;
 import com.monk.asura.config.MonkAsuraConfig;
 import com.monk.asura.ui.MonkSkillBarHud;
+import com.monk.asura.util.MonkTasks;
 import com.monk.asura.util.PlayerContext;
 import com.monk.asura.visual.MonkVfxUtil;
 
@@ -230,7 +230,8 @@ public class MonkComboService {
         MonkVfxUtil.notifySkill(ctx.playerRef(), "Fúria ativada!");
         refreshHud(state.getPlayerId());
 
-        HytaleServer.SCHEDULED_EXECUTOR.schedule(
+        MonkTasks.schedule(
+            plugin,
             () -> ctx.world().execute(() -> onFuryExpired(ctx.playerRef().getUuid())),
             (long) config.getFuryDurationSeconds(),
             TimeUnit.SECONDS
@@ -340,7 +341,8 @@ public class MonkComboService {
         for (int step = 1; step <= steps; step++) {
             final float progress = step / (float) steps;
             final int s = step;
-            HytaleServer.SCHEDULED_EXECUTOR.schedule(
+            MonkTasks.schedule(
+                plugin,
                 () -> ctx.world().execute(() -> {
                     if (s < steps) {
                         state.setAsuraConvergeProgress(progress);

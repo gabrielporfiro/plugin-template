@@ -61,6 +61,7 @@ public class MonkAsuraPlugin extends JavaPlugin {
 
     @Override
     protected void shutdown() {
+        inputHandler.unregister();
         orbVisualSystem.stop();
         comboService.clearAllHuds();
         instance = null;

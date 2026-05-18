@@ -9,6 +9,7 @@ import com.hypixel.hytale.server.core.util.EventTitleUtil;
 import com.hypixel.hytale.server.core.util.NotificationUtil;
 import com.hypixel.hytale.protocol.packets.interface_.NotificationStyle;
 import com.monk.asura.config.MonkAsuraConfig;
+import com.monk.asura.util.MonkMessages;
 import com.monk.asura.util.PlayerContext;
 
 import javax.annotation.Nonnull;
@@ -136,12 +137,8 @@ public final class MonkVfxUtil {
         trySpawnVanillaLightning(ctx, orbitPos);
     }
 
-    public static void sendChat(@Nonnull PlayerRef playerRef, @Nonnull String text) {
-        playerRef.sendMessage(Message.raw(text));
-    }
-
     public static void notifyWarning(@Nonnull PlayerRef playerRef, @Nonnull String text) {
-        sendChat(playerRef, "§c[Monk] §f" + text);
+        playerRef.sendMessage(MonkMessages.warning(text));
         NotificationUtil.sendNotification(
             playerRef.getPacketHandler(),
             Message.raw(text),
@@ -150,7 +147,7 @@ public final class MonkVfxUtil {
     }
 
     public static void notifyInfo(@Nonnull PlayerRef playerRef, @Nonnull String text) {
-        sendChat(playerRef, "§7[Monk] §f" + text);
+        playerRef.sendMessage(MonkMessages.info(text));
         NotificationUtil.sendNotification(
             playerRef.getPacketHandler(),
             Message.raw(text),
@@ -159,7 +156,7 @@ public final class MonkVfxUtil {
     }
 
     public static void notifySkill(@Nonnull PlayerRef playerRef, @Nonnull String text) {
-        sendChat(playerRef, "§b[Monk] §f" + text);
+        playerRef.sendMessage(MonkMessages.skill(text));
     }
 
     public static void showFuryTitle(@Nonnull PlayerRef playerRef) {

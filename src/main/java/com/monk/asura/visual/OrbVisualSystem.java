@@ -1,7 +1,7 @@
 package com.monk.asura.visual;
 
 import com.hypixel.hytale.math.vector.Vector3d;
-import com.hypixel.hytale.server.core.HytaleServer;
+import com.hypixel.hytale.server.core.task.TaskRegistration;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
@@ -9,13 +9,14 @@ import com.monk.asura.MonkAsuraPlugin;
 import com.monk.asura.combo.MonkComboComponent;
 import com.monk.asura.combo.MonkComboPhase;
 import com.monk.asura.config.MonkAsuraConfig;
+import com.monk.asura.util.MonkTasks;
 import com.monk.asura.util.PlayerContext;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -25,14 +26,16 @@ public class OrbVisualSystem {
 
     private final MonkAsuraPlugin plugin;
     private final Map<UUID, Long> lastOrbParticleMs = new ConcurrentHashMap<>();
-    private ScheduledFuture<?> tickTask;
+    @Nullable
+    private TaskRegistration tickTask;
 
     public OrbVisualSystem(@Nonnull MonkAsuraPlugin plugin) {
         this.plugin = plugin;
     }
 
     public void start() {
-        tickTask = HytaleServer.SCHEDULED_EXECUTOR.scheduleAtFixedRate(
+        tickTask = MonkTasks.scheduleAtFixedRate(
+            plugin,
             this::tickAll,
             100,
             100,
@@ -41,9 +44,7 @@ public class OrbVisualSystem {
     }
 
     public void stop() {
-        if (tickTask != null) {
-            tickTask.cancel(false);
-        }
+        tickTask = null;
         lastOrbParticleMs.clear();
     }
 
@@ -118,7 +119,7 @@ public class OrbVisualSystem {
     }
 
     /**
-     * Partículas imediatas na órbita ao criar um orbe (F1).
+     * Partículas imediatas na órbita ao criar um orbe (tecla 1).
      */
     public void burstOrbCreated(@Nonnull PlayerContext ctx, int orbIndex) {
         MonkComboComponent state = plugin.getComboService().getOrCreate(ctx.playerRef().getUuid());

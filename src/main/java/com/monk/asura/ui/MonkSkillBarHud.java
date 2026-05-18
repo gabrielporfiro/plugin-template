@@ -1,6 +1,5 @@
 package com.monk.asura.ui;
 
-import com.hypixel.hytale.server.core.HytaleServer;
 import com.hypixel.hytale.server.core.entity.entities.player.hud.CustomUIHud;
 import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
@@ -10,6 +9,7 @@ import com.monk.asura.MonkAsuraPlugin;
 import com.monk.asura.combo.MonkComboComponent;
 import com.monk.asura.combo.MonkComboPhase;
 import com.monk.asura.config.MonkAsuraConfig;
+import com.monk.asura.util.MonkTasks;
 
 import javax.annotation.Nonnull;
 import java.util.concurrent.TimeUnit;
@@ -40,7 +40,7 @@ public class MonkSkillBarHud extends CustomUIHud {
     }
 
     public void scheduleInitialRefresh(@Nonnull MonkComboComponent state) {
-        HytaleServer.SCHEDULED_EXECUTOR.schedule(() -> {
+        MonkTasks.schedule(plugin, () -> {
             PlayerRef playerRef = getPlayerRef();
             if (!playerRef.isValid()) {
                 return;
