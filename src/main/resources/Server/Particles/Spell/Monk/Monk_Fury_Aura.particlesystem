@@ -1,0 +1,4 @@
+{
+  "Spawners": [{ "SpawnerId": "Monk_Fury_Core" }],
+  "CullDistance": 64
+}

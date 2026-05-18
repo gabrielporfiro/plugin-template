@@ -1,11 +1,10 @@
-/**
- * NOTE: This is entirely optional and basics can be done in `settings.gradle.kts`
- */
-
-repositories {
-    // Any external repositories besides: MavenLocal, MavenCentral, HytaleMaven, and CurseMaven
+tasks.named<Jar>("jar") {
+    finalizedBy("deployMod")
 }
 
-dependencies {
-    // Any external dependency you also want to include
+tasks.register<Copy>("deployMod") {
+    dependsOn(tasks.jar)
+    from(tasks.jar)
+    into(rootProject.projectDir.parentFile.resolve("Server/mods"))
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }

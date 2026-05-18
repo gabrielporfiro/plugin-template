@@ -1,0 +1,15 @@
+{
+  "Duration": 0,
+  "Infinite": true,
+  "Debuff": false,
+  "Name": "monk.orbaura.name",
+  "StatusEffectIcon": "UI/StatusEffects/Buff.png",
+  "OverlapBehavior": "Overwrite",
+  "Invulnerable": false,
+  "ApplicationEffects": {
+    "WorldParticles": [
+      { "SystemId": "Monk_Orb_BodyAura" },
+      { "SystemId": "Monk_Electric_Sparks" }
+    ]
+  }
+}

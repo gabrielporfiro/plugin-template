@@ -1,0 +1,68 @@
+@PanelBg = PatchStyle(TexturePath: "panel_bg.png");
+@OrbTex = PatchStyle(TexturePath: "skill_orb.png");
+@FuryTex = PatchStyle(TexturePath: "skill_fury.png");
+@AsuraTex = PatchStyle(TexturePath: "skill_asura.png");
+
+Group {
+  LayoutMode: Center;
+
+  Group #MenuPanel {
+    Background: @PanelBg;
+    Anchor: (Width: 520, Height: 420);
+    LayoutMode: Top;
+    Padding: (Full: 24);
+
+    Label #Title {
+      Style: (FontSize: 28, Alignment: Center);
+      Anchor: (Top: 8, Width: 480, Height: 40);
+      Text: "Habilidades — Caminho do Monge";
+    }
+
+    Label #Hint {
+      Style: (FontSize: 14, Alignment: Center);
+      Anchor: (Top: 8, Width: 480, Height: 28);
+      Text: "Passe o mouse sobre os icones. F1 / F2 / F3 no jogo.";
+    }
+
+    Group #SkillsRow {
+      LayoutMode: Left;
+      Anchor: (Top: 24, Width: 480, Height: 120);
+
+      ItemSlotButton #SkillSlot1 {
+        Anchor: (Width: 96, Height: 96, Left: 16);
+        TooltipText: "Carregando…";
+
+        ItemIcon #SkillIcon1 {
+          Background: @OrbTex;
+          Anchor: (Width: 72, Height: 72);
+        }
+      }
+
+      ItemSlotButton #SkillSlot2 {
+        Anchor: (Width: 96, Height: 96, Left: 24);
+        TooltipText: "Carregando…";
+
+        ItemIcon #SkillIcon2 {
+          Background: @FuryTex;
+          Anchor: (Width: 72, Height: 72);
+        }
+      }
+
+      ItemSlotButton #SkillSlot3 {
+        Anchor: (Width: 96, Height: 96, Left: 24);
+        TooltipText: "Carregando…";
+
+        ItemIcon #SkillIcon3 {
+          Background: @AsuraTex;
+          Anchor: (Width: 72, Height: 72);
+        }
+      }
+    }
+
+    Label #Footer {
+      Style: (FontSize: 13, Alignment: Center);
+      Anchor: (Top: 32, Width: 480, Height: 60);
+      Text: "F1 Esfera - F2 Furia (5 orbes) - F3 Asura (apos Furia + 5 orbes)";
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "RenderMode": "BlendAdd",
+  "ParticleRotationInfluence": "Billboard",
+  "ParticleLifeSpan": { "Min": 0.4, "Max": 0.8 },
+  "SpawnRate": { "Min": 8, "Max": 14 },
+  "MaxConcurrentParticles": 32,
+  "EmitOffset": {
+    "X": { "Min": -0.1, "Max": 0.1 },
+    "Y": { "Min": -0.1, "Max": 0.1 },
+    "Z": { "Min": -0.1, "Max": 0.1 }
+  },
+  "InitialVelocity": {
+    "Yaw": { "Min": 0, "Max": 360 },
+    "Pitch": { "Min": 0, "Max": 360 },
+    "Speed": { "Min": 0.02, "Max": 0.08 }
+  },
+  "Particle": {
+    "Texture": "Particles/Textures/Shapes/Lightning.png",
+    "FrameSize": { "Width": 32, "Height": 32 },
+    "Animation": {
+      "0": {
+        "Scale": { "X": { "Min": 0.3, "Max": 0.4 }, "Y": { "Min": 0.3, "Max": 0.4 } },
+        "Opacity": 0.9,
+        "Color": "#99eeff"
+      },
+      "100": {
+        "Scale": { "X": { "Min": 0, "Max": 0 }, "Y": { "Min": 0, "Max": 0 } },
+        "Opacity": 0,
+        "Color": "#224466"
+      }
+    }
+  }
+}

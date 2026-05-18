@@ -1,0 +1,7 @@
+{
+  "Spawners": [
+    { "SpawnerId": "Monk_Asura_Core" },
+    { "SpawnerId": "Monk_Fury_Lightning" }
+  ],
+  "CullDistance": 96
+}

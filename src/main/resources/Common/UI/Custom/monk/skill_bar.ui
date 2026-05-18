@@ -1,0 +1,42 @@
+@OrbTex = PatchStyle(TexturePath: "skill_orb.png");
+@OrbTexDim = PatchStyle(TexturePath: "skill_bg.png");
+@FuryTex = PatchStyle(TexturePath: "skill_fury.png");
+@FuryTexDim = PatchStyle(TexturePath: "skill_bg.png");
+@AsuraTex = PatchStyle(TexturePath: "skill_asura.png");
+@AsuraTexDim = PatchStyle(TexturePath: "skill_bg.png");
+@GlowTex = PatchStyle(TexturePath: "skill_glow.png");
+
+Group {
+  LayoutMode: Center;
+  Anchor: (Top: 12, Width: 150, Height: 44);
+
+  Group #SkillBar {
+    LayoutMode: Left;
+    Anchor: (Width: 138, Height: 40);
+
+    Group #Skill1 {
+      Background: @OrbTexDim;
+      Anchor: (Width: 40, Height: 40, Left: 0);
+    }
+
+    Group #Skill2 {
+      Background: @FuryTexDim;
+      Anchor: (Width: 40, Height: 40, Left: 6);
+    }
+
+    Group #Skill3Wrap {
+      Anchor: (Width: 40, Height: 40, Left: 6);
+
+      Group #Skill3Glow {
+        Background: @GlowTex;
+        Anchor: (Width: 40, Height: 40);
+        Visible: false;
+      }
+
+      Group #Skill3 {
+        Background: @AsuraTexDim;
+        Anchor: (Width: 40, Height: 40);
+      }
+    }
+  }
+}

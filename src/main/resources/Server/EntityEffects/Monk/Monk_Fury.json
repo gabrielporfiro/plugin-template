@@ -1,0 +1,25 @@
+{
+  "Duration": 30,
+  "Infinite": false,
+  "Debuff": false,
+  "Name": "monk.fury.name",
+  "StatusEffectIcon": "UI/StatusEffects/Buff.png",
+  "OverlapBehavior": "Overwrite",
+  "Invulnerable": false,
+  "ApplicationEffects": {
+    "WorldParticles": [
+      { "SystemId": "Monk_Fury_Aura" },
+      { "SystemId": "Monk_Fury_Lightning" }
+    ]
+  },
+  "StatModifiers": {
+    "Damage": {
+      "CalculationType": "Multiply",
+      "Amount": 1.25
+    },
+    "MovementSpeed": {
+      "CalculationType": "Multiply",
+      "Amount": 1.15
+    }
+  }
+}

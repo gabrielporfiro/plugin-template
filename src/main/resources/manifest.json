@@ -1,20 +1,17 @@
 {
-    "Group": "HytaleModding",
-    "Name": "ExamplePlugin",
-    "Version": "0.0.0",
-    "Description": "Description of your plugin",
+    "Group": "MonkAsura",
+    "Name": "MonkAsura",
+    "Version": "1.0.0",
+    "Description": "Sistema de 3 habilidades Monk estilo Ragnarok Online (Esferas, Fúria, Asura)",
     "Authors": [
         {
-            "Name": "Your Name",
-            "Email": "your.email@example.com",
-            "Url": "https://your-website.com"
+            "Name": "MonkAsura"
         }
     ],
-    "Website": "https://your-plugin-website.com",
     "DisabledByDefault": false,
-    "IncludesAssetPack": false,
+    "IncludesAssetPack": true,
     "Dependencies": {},
     "OptionalDependencies": {},
-    "ServerVersion": "*",
-    "Main": "dev.hytalemodding.ExamplePlugin"
+    "ServerVersion": "2026.03.26-89796e57b",
+    "Main": "com.monk.asura.MonkAsuraPlugin"
 }
